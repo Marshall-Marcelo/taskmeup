@@ -11,8 +11,17 @@ export function buildApp(): Application {
   app.use(
     cors({
       origin: process.env.CLIENT_URL,
+      credentials: true,
     }),
   );
+
+  app.get('/health', (_req, res) => {
+    res.status(200).json({
+      status: 'OK',
+      message: 'Server is running',
+      timestamp: new Date().toISOString(),
+    });
+  });
 
   app.use(express.json());
   app.use(cookieParser());
