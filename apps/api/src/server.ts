@@ -1,10 +1,8 @@
-import dotenv from 'dotenv';
+import { env } from './configs/env.js';
 import { buildApp } from './app.js';
 import { pool } from './configs/db.js';
 import { createServer } from 'node:http';
-import { initializeSocket } from './sockets/socket.js';
-
-dotenv.config();
+import { initializeSocket } from './configs/socket.js';
 
 function startServer() {
   try {
@@ -12,7 +10,7 @@ function startServer() {
     const httpServer = createServer(app);
     initializeSocket(httpServer);
 
-    const port = process.env.PORT;
+    const port = env.PORT;
 
     const server = httpServer.listen(port, () => {
       console.log(`Server is running on PORT ${port}`);

@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
+import { env } from './env.js';
 
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: env.DATABASE_URL,
   max: 5,
 });

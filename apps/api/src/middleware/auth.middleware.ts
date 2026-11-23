@@ -1,0 +1,22 @@
+import type { Request, Response, NextFunction } from 'express';
+import { UnauthorizedError } from '@taskmeup/shared';
+import jwt from 'jsonwebtoken';
+import { env } from '../configs/env.js';
+
+export function verifyAccessToken(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const accessToken = req.cookies.accessToken;
+
+    if (!accessToken) {
+      throw new UnauthorizedError('Invalid Token');
+    }
+
+    const payload = jwt.verify(accessToken, env.JWT_SECRET_ACCESS);
+  } catch (error) {
+    next(error);
+  }
+}

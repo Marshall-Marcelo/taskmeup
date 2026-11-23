@@ -85,3 +85,11 @@ export class ServiceUnavailableError extends AppError {
     super(message, 503);
   }
 }
+
+export const SQL_ERRORS = {
+  NOT_NULL_VIOLATION: '23502',
+  FOREIGN_KEY_VIOLATION: '23503',
+  UNIQUE_VIOLATION: '23505',
+  CHECK_VIOLATION: '23514',
+  EXCLUSION_VIOLATION: '23P01',
+} as const;

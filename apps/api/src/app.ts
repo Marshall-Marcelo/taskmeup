@@ -1,3 +1,4 @@
+import { env } from './configs/env.js';
 import express, { type Application } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -6,12 +7,12 @@ import { errorMiddleware } from './middleware/error.middleware.js';
 
 export function buildApp(): Application {
   const app = express();
-  const environment = process.env.ENVIRONMENT;
+  const environment = env.ENVIRONMENT;
 
   app.use(environment === 'dev' ? morgan('dev') : morgan('tiny'));
   app.use(
     cors({
-      origin: process.env.CLIENT_URL,
+      origin: env.CLIENT_URL,
       credentials: true,
     }),
   );
