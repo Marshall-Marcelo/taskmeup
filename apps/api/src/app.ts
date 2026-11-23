@@ -2,6 +2,7 @@ import express, { type Application } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
+import { errorMiddleware } from './middleware/error.middleware.js';
 
 export function buildApp(): Application {
   const app = express();
@@ -25,6 +26,10 @@ export function buildApp(): Application {
 
   app.use(express.json());
   app.use(cookieParser());
+
+  // routes go here
+
+  app.use(errorMiddleware);
 
   return app;
 }
