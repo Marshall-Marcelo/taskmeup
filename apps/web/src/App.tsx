@@ -3,8 +3,12 @@ import { routeTree } from './routeTree.gen';
 import { QueryProvider } from '@/lib/query-client';
 import { AuthProvider } from '@/features/auth';
 import { useAuth } from '@/features/auth';
+import { NotFoundPage } from '@/features/auth';
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: NotFoundPage,
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
