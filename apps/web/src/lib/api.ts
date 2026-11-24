@@ -1,4 +1,4 @@
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
 
 class ApiService {
   protected async handleFetch<T>(
@@ -7,7 +7,7 @@ class ApiService {
   ): Promise<T> {
     try {
       const request = () =>
-        fetch(`${baseUrl}${endpoint}`, {
+        fetch(`http://localhost:5000${endpoint}`, {
           ...options,
           credentials: 'include',
           headers: {
@@ -16,12 +16,12 @@ class ApiService {
           },
         });
 
-      let response = await request();
+      const response = await request();
 
-      if (response.status === 401) {
-        // Add refresh access token logic here
-        response = await request();
-      }
+      // if (response.status === 401) {
+      //   // Add refresh access token logic here
+      //   response = await request();
+      // }
 
       if (!response.ok) {
         const data = await response.json();

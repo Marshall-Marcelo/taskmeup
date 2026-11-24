@@ -1,7 +1,14 @@
-import React from 'react';
+import RegisterForm from '@/features/auth/components/RegisterForm';
 
 const RegisterPage = () => {
-  return <div>RegisterPage</div>;
+  return (
+    <div className="flex flex-col gap-2 bg-primary">
+      <h1 className="text-center text-5xl text-white font-bold p-10">
+        TaskMeUp
+      </h1>
+      <RegisterForm />
+    </div>
+  );
 };
 
 export default RegisterPage;

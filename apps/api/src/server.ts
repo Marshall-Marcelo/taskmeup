@@ -4,13 +4,16 @@ import { pool } from './configs/db.js';
 import { createServer } from 'node:http';
 import { initializeSocket } from './configs/socket.js';
 
-function startServer() {
+async function startServer() {
   try {
     const app = buildApp();
     const httpServer = createServer(app);
     initializeSocket(httpServer);
 
     const port = env.PORT;
+
+    const result = await pool.query('SELECT NOW()');
+    console.log('Connected! DB Time:', result.rows[0].now);
 
     const server = httpServer.listen(port, () => {
       console.log(`Server is running on PORT ${port}`);

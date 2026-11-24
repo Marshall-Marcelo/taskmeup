@@ -4,6 +4,7 @@ import { QueryProvider } from '@/lib/query-client';
 import { AuthProvider } from '@/features/auth';
 import { useAuth } from '@/features/auth';
 import { NotFoundPage } from '@/features/auth';
+import { Toaster } from 'sonner';
 
 const router = createRouter({
   routeTree,
@@ -37,6 +38,7 @@ const App = () => {
     <QueryProvider>
       <AuthProvider>
         <RoutedApplication />
+        <Toaster duration={2 * 1000} />
       </AuthProvider>
     </QueryProvider>
   );
