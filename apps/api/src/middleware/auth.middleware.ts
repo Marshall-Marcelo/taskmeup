@@ -16,6 +16,14 @@ export function verifyAccessToken(
     }
 
     const payload = jwt.verify(accessToken, env.JWT_SECRET_ACCESS);
+
+    if (typeof payload === 'string' || !payload.sub) {
+      throw new UnauthorizedError('Invalid token');
+    }
+
+    req.userId = payload.sub;
+
+    next();
   } catch (error) {
     next(error);
   }

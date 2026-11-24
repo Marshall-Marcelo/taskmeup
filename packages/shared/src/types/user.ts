@@ -1,3 +1,14 @@
+export interface User_DB {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  created_at: string;
+  updated_at: string;
+  last_online_at: string;
+}
+
 export interface User {
   userId: string;
   firstName: string;
@@ -8,10 +19,5 @@ export interface User {
   updatedAt?: string;
   lastOnlineAt?: string;
 }
-
-export interface NewUser extends Omit<
-  User,
-  'createdAt' | 'updatedAt' | 'lastOnlineAt' | 'userId'
-> {}
 
 export interface LoggedInUser extends Omit<User, 'password'> {}
