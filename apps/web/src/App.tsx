@@ -5,25 +5,33 @@ import { AuthProvider } from '@/features/auth';
 import { useAuth } from '@/features/auth';
 import { NotFoundPage } from '@/features/auth';
 import { Toaster } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
+// import { useEffect } from 'react';
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   defaultNotFoundComponent: NotFoundPage,
+  context: { user: undefined, isAuthenticated: false },
 });
 
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
-
-  interface RouterContext {
-    user?: string;
-    isAuthenticated: string;
-  }
 }
 
 function RoutedApplication() {
   const auth = useAuth();
+
+  // useEffect(() => {
+  //   if (!auth.isRefreshingUser) {
+  //     void router.invalidate();
+  //   }
+  // }, [auth.isRefreshingUser, auth.isAuthenticated]);
+
+  if (auth.isRefreshingUser) {
+    return <Spinner />;
+  }
 
   return (
     <RouterProvider

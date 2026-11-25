@@ -1,5 +1,5 @@
 import { pool } from '../configs/db.js';
-import type { NewUser, User_DB } from '@taskmeup/shared';
+import type { LoggedInUser, NewUser, User_DB } from '@taskmeup/shared';
 
 export async function createUser(userId: string, newUser: NewUser) {
   const result = await pool.query(
@@ -23,6 +23,17 @@ export async function getUserWithEmail(email: string): Promise<User_DB | null> {
      WHERE email = $1
      LIMIT 1`,
     [email],
+  );
+
+  return result.rows[0] ?? null;
+}
+
+export async function getUserWithId(userId: string): Promise<User_DB | null> {
+  const result = await pool.query<User_DB>(
+    `SELECT * FROM users
+     WHERE user_id = $1
+     LIMIT 1`,
+    [userId],
   );
 
   return result.rows[0] ?? null;

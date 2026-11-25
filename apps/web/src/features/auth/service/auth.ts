@@ -4,6 +4,7 @@ import type {
   LoggedInUser,
   LoginCredentials,
   MessageResponse,
+  LoginResponse,
 } from '@taskmeup/shared';
 
 class AuthService extends ApiService {
@@ -21,14 +22,22 @@ class AuthService extends ApiService {
     return data;
   }
 
-  async login(credentials: LoginCredentials): Promise<LoggedInUser> {
-    const data: LoggedInUser = await this.handleFetch(`/auth/login`, {
+  async login(credentials: LoginCredentials): Promise<LoginResponse> {
+    const data: LoginResponse = await this.handleFetch(`/auth/login`, {
       method: 'POST',
       body: JSON.stringify({
         email: credentials.email,
         password: credentials.password,
       }),
     });
+    return data;
+  }
+
+  async refreshUser(): Promise<LoggedInUser> {
+    const data: LoggedInUser = await this.handleFetch(`/auth/me`, {
+      method: 'GET',
+    });
+
     return data;
   }
 }

@@ -8,20 +8,20 @@ class ApiService {
     try {
       const request = () =>
         fetch(`http://localhost:5000${endpoint}`, {
-          ...options,
           credentials: 'include',
+          ...options,
           headers: {
             'Content-Type': 'application/json',
             ...options.headers,
           },
         });
 
-      const response = await request();
+      let response = await request();
 
-      // if (response.status === 401) {
-      //   // Add refresh access token logic here
-      //   response = await request();
-      // }
+      if (response.status === 401) {
+        await this.refreshAccessToken();
+        response = await request();
+      }
 
       if (!response.ok) {
         const data = await response.json();
@@ -39,7 +39,7 @@ class ApiService {
   }
 
   private async refreshAccessToken() {
-    const response = await fetch(``, {
+    const response = await fetch(`http://localhost:5000/auth/refresh`, {
       credentials: 'include',
       method: 'POST',
     });

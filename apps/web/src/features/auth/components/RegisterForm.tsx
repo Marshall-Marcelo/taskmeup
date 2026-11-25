@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form';
+import { useNavigate } from '@tanstack/react-router';
 import { NewUserSchema } from '@taskmeup/shared';
 import {
   Card,
@@ -20,8 +21,10 @@ import { Link } from '@tanstack/react-router';
 import { useRegisterAccount } from '@/features/auth/hooks/useRegister';
 import type { NewUser } from '@taskmeup/shared';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const { mutate: createAccount, isPending: isCreatingAccount } =
     useRegisterAccount();
   const form = useForm({
@@ -44,11 +47,12 @@ const RegisterForm = () => {
 
       console.log(newUser);
 
-      if (isCreatingAccount) return <h1>Loading</h1>;
+      if (isCreatingAccount) return <Spinner />;
 
       createAccount(newUser, {
         onSuccess: (data) => {
           toast(data.message);
+          navigate({ to: '/login' });
         },
       });
     },
@@ -174,13 +178,14 @@ const RegisterForm = () => {
       </CardContent>
       <CardFooter>
         <Field orientation={'horizontal'}>
-          <Link to="/login">
-            <span className="text-xs text-muted-foreground">
+          <Link disabled={isCreatingAccount} to="/login">
+            <span className="text-xs text-muted-foreground hover:cursor-pointer">
               Already have an account?
             </span>
           </Link>
           <div className="ml-auto flex flex-row gap-2">
             <Button
+              disabled={isCreatingAccount}
               className={'px-6'}
               type="button"
               variant={'outline'}
@@ -188,7 +193,12 @@ const RegisterForm = () => {
             >
               Reset
             </Button>
-            <Button className={'px-6'} type="submit" form="registration-form">
+            <Button
+              disabled={isCreatingAccount}
+              className={'px-6'}
+              type="submit"
+              form="registration-form"
+            >
               Submit
             </Button>
           </div>
