@@ -4,8 +4,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AppLayout = ({ children }: Props) => {
+const PrivateLayout = ({ children }: Props) => {
   return <div>{children}</div>;
 };
 
-export default AppLayout;
+export default PrivateLayout;

@@ -3,7 +3,6 @@ import { useNavigate } from '@tanstack/react-router';
 import { LoginSchema } from '@taskmeup/shared';
 import type { LoginCredentials } from '@taskmeup/shared';
 import { toast } from 'sonner';
-// import { Spinner } from '@/components/ui/spinner';
 import { useLoginAccount } from '@/features/auth/hooks/useLogin';
 import {
   Card,
@@ -22,11 +21,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
-// import { useRouter } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  // const router = useRouter();
+  const router = useRouter();
   const { mutateAsync: login, isPending: isLoggingIn } = useLoginAccount();
   const form = useForm({
     defaultValues: {
@@ -42,22 +41,14 @@ const LoginForm = () => {
         password: value.password,
       };
 
-      // try {
-      //   const data = await login(credentials);
-
-      //   await router.invalidate();
-
-      //   await navigate({ to: '/dashboard' });
-
-      //   toast.success(data.message);
-      // } catch (error) {
-      //   toast.error(error instanceof Error ? error.message : 'Login failed');
-      // }
-
       login(credentials, {
-        onSuccess: (data) => {
-          // await router.invalidate();
-          // await navigate({ to: '/dashboard' });
+        onSuccess: async (data) => {
+          await router.update({
+            context: {
+              user: data.user,
+              isAuthenticated: data.user !== undefined,
+            },
+          });
           navigate({ to: '/dashboard' });
           toast(data.message);
         },

@@ -6,7 +6,7 @@ import { useAuth } from '@/features/auth';
 import { NotFoundPage } from '@/features/auth';
 import { Toaster } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-// import { useEffect } from 'react';
+import { SocketProvider } from '@/lib/socket-provider';
 
 export const router = createRouter({
   routeTree,
@@ -22,12 +22,6 @@ declare module '@tanstack/react-router' {
 
 function RoutedApplication() {
   const auth = useAuth();
-
-  // useEffect(() => {
-  //   if (!auth.isRefreshingUser) {
-  //     void router.invalidate();
-  //   }
-  // }, [auth.isRefreshingUser, auth.isAuthenticated]);
 
   if (auth.isRefreshingUser) {
     return <Spinner />;
@@ -45,8 +39,10 @@ const App = () => {
   return (
     <QueryProvider>
       <AuthProvider>
-        <RoutedApplication />
-        <Toaster duration={2 * 1000} />
+        <SocketProvider>
+          <RoutedApplication />
+          <Toaster duration={2 * 1000} />
+        </SocketProvider>
       </AuthProvider>
     </QueryProvider>
   );

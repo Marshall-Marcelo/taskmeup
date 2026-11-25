@@ -7,7 +7,7 @@ class ApiService {
   ): Promise<T> {
     try {
       const request = () =>
-        fetch(`http://localhost:5000${endpoint}`, {
+        fetch(`${baseUrl}${endpoint}`, {
           credentials: 'include',
           ...options,
           headers: {
@@ -39,7 +39,7 @@ class ApiService {
   }
 
   private async refreshAccessToken() {
-    const response = await fetch(`http://localhost:5000/auth/refresh`, {
+    const response = await fetch(`${baseUrl}/auth/refresh`, {
       credentials: 'include',
       method: 'POST',
     });

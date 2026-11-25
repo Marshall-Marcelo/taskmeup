@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
-import AppLayout from '@/layouts/AppLayout';
+import PrivateLayout from '@/layouts/PrivateLayout';
 
 export const Route = createFileRoute('/(app)')({
   component: RouteComponent,
@@ -13,8 +13,8 @@ export const Route = createFileRoute('/(app)')({
 
 function RouteComponent() {
   return (
-    <AppLayout>
+    <PrivateLayout>
       <Outlet />
-    </AppLayout>
+    </PrivateLayout>
   );
 }
