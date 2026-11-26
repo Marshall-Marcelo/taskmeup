@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import {
   createNewWorkspace,
   getWorkspaceDetails,
+  getWorkspaces,
 } from '../service/workspace.service.js';
 import { UnauthorizedError, BadRequestError } from '@taskmeup/shared';
 
@@ -44,6 +45,26 @@ export async function getWorkspaceDetailsController(
     const workspace = await getWorkspaceDetails(workspaceId);
 
     res.status(200).json(workspace);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorkspacesController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      throw new UnauthorizedError('Invalid access');
+    }
+
+    const workspaces = await getWorkspaces(userId);
+
+    res.status(200).json(workspaces);
   } catch (error) {
     next(error);
   }

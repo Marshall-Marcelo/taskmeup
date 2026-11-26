@@ -3,6 +3,7 @@ import type { Router as ExpressRouter } from 'express';
 import {
   createNewWorkspaceController,
   getWorkspaceDetailsController,
+  getWorkspacesController,
 } from '../controller/workspace.controller.js';
 import { verifyAccessToken } from '../middleware/auth.middleware.js';
 import {
@@ -13,6 +14,8 @@ import {
 const router: ExpressRouter = Router();
 
 router.post('/new', verifyAccessToken, createNewWorkspaceController);
+router.get('/list', verifyAccessToken, getWorkspacesController);
+
 router.get(
   '/:workspaceId',
   verifyAccessToken,

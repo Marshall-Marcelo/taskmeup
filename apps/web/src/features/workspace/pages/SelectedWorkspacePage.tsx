@@ -17,8 +17,8 @@ const SelectedWorkspacePage = ({ workspaceId }: Props) => {
   if (isPending || isFetching) return <Spinner />;
 
   return (
-    <div>
-      <div>{workspace?.workspaceName}</div>
+    <div className="flex flex-col">
+      <h1 className="text-2xl font-semibold">{workspace?.workspaceName}</h1>
     </div>
   );
 };

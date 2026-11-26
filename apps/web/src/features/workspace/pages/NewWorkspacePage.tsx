@@ -44,7 +44,7 @@ const NewWorkspacePage = () => {
   });
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-xl font-semibold">Collaboration starts here!</h1>
+      <h1 className="text-2xl font-semibold">Collaboration starts here!</h1>
       <Card>
         <CardHeader>
           <CardTitle>Create New Workspace</CardTitle>

@@ -1,5 +1,9 @@
 import { ApiService } from '@/lib/api';
-import type { NewWorkspaceResponse, Workspace } from '@taskmeup/shared';
+import type {
+  NewWorkspaceResponse,
+  Workspace,
+  WorkspaceList,
+} from '@taskmeup/shared';
 
 class WorkspaceService extends ApiService {
   async createNewWorkspace(
@@ -23,6 +27,14 @@ class WorkspaceService extends ApiService {
         method: 'GET',
       },
     );
+
+    return data;
+  }
+
+  async getWorkspaces(): Promise<WorkspaceList[]> {
+    const data: WorkspaceList[] = await this.handleFetch(`/workspace/list`, {
+      method: 'GET',
+    });
 
     return data;
   }

@@ -34,3 +34,13 @@ export interface WorkspaceMembers_DB {
   role: WorkspaceRoles;
   joined_at: string;
 }
+
+export interface WorkspaceList {
+  workspaceId: string;
+  workspaceName: string;
+}
+
+export interface WorkspaceList_DB {
+  workspace_id: string;
+  workspace_name: string;
+}

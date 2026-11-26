@@ -1,5 +1,9 @@
 import { pool } from '../configs/db.js';
-import type { NewWorkspace, Workspace_DB } from '@taskmeup/shared';
+import type {
+  NewWorkspace,
+  Workspace_DB,
+  WorkspaceList_DB,
+} from '@taskmeup/shared';
 
 // Add query related message group creation here
 export async function createWorkspace(newWorkspace: NewWorkspace) {
@@ -70,4 +74,20 @@ export async function getWorkspaceDetails(
   );
 
   return result.rows[0] ?? null;
+}
+
+export async function getWorkspaces(
+  userId: string,
+): Promise<WorkspaceList_DB[]> {
+  const result = await pool.query<WorkspaceList_DB>(
+    `SELECT w.workspace_id, w.workspace_name
+     FROM workspace_members wm
+     INNER JOIN workspace w
+     ON w.workspace_id = wm.workspace_id
+     WHERE wm.user_id = $1
+    `,
+    [userId],
+  );
+
+  return result.rows;
 }
