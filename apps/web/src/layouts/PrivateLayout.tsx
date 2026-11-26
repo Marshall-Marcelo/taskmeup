@@ -13,9 +13,10 @@ const PrivateLayout = ({ children }: Props) => {
   });
 
   return (
-    <div className="flex flex-col min-h-dvh min-w-dvw">
+    <div className="flex flex-col min-h-dvh">
       <HeaderBar />
       <main className="flex-1 p-4">{children}</main>
+      <div className="h-20"></div>
       <NavigationBar
         currentPath={currentPath}
         className="fixed bottom-4 left-1/2 -translate-x-1/2"

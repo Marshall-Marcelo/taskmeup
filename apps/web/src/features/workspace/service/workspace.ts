@@ -1,5 +1,5 @@
 import { ApiService } from '@/lib/api';
-import type { NewWorkspaceResponse } from '@taskmeup/shared';
+import type { NewWorkspaceResponse, Workspace } from '@taskmeup/shared';
 
 class WorkspaceService extends ApiService {
   async createNewWorkspace(
@@ -10,6 +10,17 @@ class WorkspaceService extends ApiService {
       {
         method: 'POST',
         body: JSON.stringify({ workspaceName }),
+      },
+    );
+
+    return data;
+  }
+
+  async getWorkspaceDetails(workspaceId: string): Promise<Workspace> {
+    const data: Workspace = await this.handleFetch(
+      `/workspace/${workspaceId}`,
+      {
+        method: 'GET',
       },
     );
 

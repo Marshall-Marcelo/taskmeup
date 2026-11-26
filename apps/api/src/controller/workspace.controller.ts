@@ -1,6 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
-import { createNewWorkspace } from '../service/workspace.service.js';
-import { UnauthorizedError } from '@taskmeup/shared';
+import {
+  createNewWorkspace,
+  getWorkspaceDetails,
+} from '../service/workspace.service.js';
+import { UnauthorizedError, BadRequestError } from '@taskmeup/shared';
 
 export async function createNewWorkspaceController(
   req: Request,
@@ -21,6 +24,26 @@ export async function createNewWorkspaceController(
       workspaceId,
       message: 'Workspace creation successful',
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorkspaceDetailsController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { workspaceId } = req.params;
+
+    if (!workspaceId || Array.isArray(workspaceId)) {
+      throw new BadRequestError('Malformed data');
+    }
+
+    const workspace = await getWorkspaceDetails(workspaceId);
+
+    res.status(200).json(workspace);
   } catch (error) {
     next(error);
   }

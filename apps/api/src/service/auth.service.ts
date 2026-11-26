@@ -46,8 +46,8 @@ export async function loginUser(email: string, password: string) {
     lastName: user.last_name,
     email: user.email,
     createdAt: user.created_at,
-    updatedAt: user.updated_at,
-    lastOnlineAt: user.last_online_at,
+    updatedAt: user.updated_at ?? null,
+    lastOnlineAt: user.last_online_at ?? null,
   };
 
   const refreshToken = generateRefreshToken(parsedUser.userId);
@@ -83,8 +83,8 @@ export async function refreshCurrentUser(accessToken: string) {
     lastName: user.last_name,
     email: user.email,
     createdAt: user.created_at,
-    updatedAt: user.updated_at,
-    lastOnlineAt: user.last_online_at,
+    updatedAt: user.updated_at ?? null,
+    lastOnlineAt: user.last_online_at ?? null,
   };
 
   return parsedUser;

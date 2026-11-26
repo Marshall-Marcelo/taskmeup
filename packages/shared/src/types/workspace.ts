@@ -3,7 +3,7 @@ export interface Workspace {
   createdBy: string;
   workspaceName: string;
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string | null;
 }
 
 export interface Workspace_DB {
@@ -11,7 +11,7 @@ export interface Workspace_DB {
   created_by: string;
   workspace_name: string;
   created_at: string;
-  updated_at?: string;
+  updated_at: string | null;
 }
 
 export interface NewWorkspace extends Omit<

@@ -5,8 +5,8 @@ export interface User_DB {
   email: string;
   password: string;
   created_at: string;
-  updated_at: string;
-  last_online_at: string;
+  updated_at: string | null;
+  last_online_at: string | null;
 }
 
 export interface User {
@@ -16,8 +16,8 @@ export interface User {
   email: string;
   password: string;
   createdAt: string;
-  updatedAt?: string;
-  lastOnlineAt?: string;
+  updatedAt: string | null;
+  lastOnlineAt: string | null;
 }
 
 export interface LoggedInUser extends Omit<User, 'password'> {}
