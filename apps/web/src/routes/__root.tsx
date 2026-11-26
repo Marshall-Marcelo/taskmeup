@@ -1,5 +1,5 @@
+import React from 'react';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
-import PublicLayout from '@/layouts/PublicLayout';
 import type { RouterContext } from '@/context/router-context';
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -8,8 +8,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootComponent() {
   return (
-    <PublicLayout>
+    <React.Fragment>
       <Outlet />
-    </PublicLayout>
+    </React.Fragment>
   );
 }

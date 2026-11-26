@@ -11,9 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as appRouteRouteImport } from './routes/(app)/route'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as RegisterRouteImport } from './routes/register'
+import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as appDashboardRouteImport } from './routes/(app)/dashboard'
+import { Route as publicLoginRouteImport } from './routes/(public)/login'
+import { Route as publicRegisterRouteImport } from './routes/(public)/register'
+import { Route as appMessagesIndexRouteImport } from './routes/(app)/messages/index'
+import { Route as appTaskIndexRouteImport } from './routes/(app)/task/index'
+import { Route as appWorkspaceIndexRouteImport } from './routes/(app)/workspace/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,14 +28,8 @@ const appRouteRoute = appRouteRouteImport.update({
   id: '/(app)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
+const publicRouteRoute = publicRouteRouteImport.update({
+  id: '/(public)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const appDashboardRoute = appDashboardRouteImport.update({
@@ -39,40 +37,98 @@ const appDashboardRoute = appDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => appRouteRoute,
 } as any)
+const publicLoginRoute = publicLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicRegisterRoute = publicRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const appMessagesIndexRoute = appMessagesIndexRouteImport.update({
+  id: '/messages/',
+  path: '/messages/',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appTaskIndexRoute = appTaskIndexRouteImport.update({
+  id: '/task/',
+  path: '/task/',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appWorkspaceIndexRoute = appWorkspaceIndexRouteImport.update({
+  id: '/workspace/',
+  path: '/workspace/',
+  getParentRoute: () => appRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
   '/dashboard': typeof appDashboardRoute
+  '/login': typeof publicLoginRoute
+  '/register': typeof publicRegisterRoute
+  '/messages/': typeof appMessagesIndexRoute
+  '/task/': typeof appTaskIndexRoute
+  '/workspace/': typeof appWorkspaceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
   '/dashboard': typeof appDashboardRoute
+  '/login': typeof publicLoginRoute
+  '/register': typeof publicRegisterRoute
+  '/messages': typeof appMessagesIndexRoute
+  '/task': typeof appTaskIndexRoute
+  '/workspace': typeof appWorkspaceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(app)': typeof appRouteRouteWithChildren
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
+  '/(public)': typeof publicRouteRouteWithChildren
   '/(app)/dashboard': typeof appDashboardRoute
+  '/(public)/login': typeof publicLoginRoute
+  '/(public)/register': typeof publicRegisterRoute
+  '/(app)/messages/': typeof appMessagesIndexRoute
+  '/(app)/task/': typeof appTaskIndexRoute
+  '/(app)/workspace/': typeof appWorkspaceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/messages/'
+    | '/task/'
+    | '/workspace/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/dashboard'
-  id: '__root__' | '/' | '/(app)' | '/login' | '/register' | '/(app)/dashboard'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/messages'
+    | '/task'
+    | '/workspace'
+  id:
+    | '__root__'
+    | '/'
+    | '/(app)'
+    | '/(public)'
+    | '/(app)/dashboard'
+    | '/(public)/login'
+    | '/(public)/register'
+    | '/(app)/messages/'
+    | '/(app)/task/'
+    | '/(app)/workspace/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   appRouteRoute: typeof appRouteRouteWithChildren
-  LoginRoute: typeof LoginRoute
-  RegisterRoute: typeof RegisterRoute
+  publicRouteRoute: typeof publicRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -91,18 +147,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
+    '/(public)': {
+      id: '/(public)'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof publicRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(app)/dashboard': {
@@ -112,26 +161,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appDashboardRouteImport
       parentRoute: typeof appRouteRoute
     }
+    '/(public)/login': {
+      id: '/(public)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicLoginRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/register': {
+      id: '/(public)/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof publicRegisterRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(app)/messages/': {
+      id: '/(app)/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof appMessagesIndexRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/task/': {
+      id: '/(app)/task/'
+      path: '/task'
+      fullPath: '/task/'
+      preLoaderRoute: typeof appTaskIndexRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/workspace/': {
+      id: '/(app)/workspace/'
+      path: '/workspace'
+      fullPath: '/workspace/'
+      preLoaderRoute: typeof appWorkspaceIndexRouteImport
+      parentRoute: typeof appRouteRoute
+    }
   }
 }
 
 interface appRouteRouteChildren {
   appDashboardRoute: typeof appDashboardRoute
+  appMessagesIndexRoute: typeof appMessagesIndexRoute
+  appTaskIndexRoute: typeof appTaskIndexRoute
+  appWorkspaceIndexRoute: typeof appWorkspaceIndexRoute
 }
 
 const appRouteRouteChildren: appRouteRouteChildren = {
   appDashboardRoute: appDashboardRoute,
+  appMessagesIndexRoute: appMessagesIndexRoute,
+  appTaskIndexRoute: appTaskIndexRoute,
+  appWorkspaceIndexRoute: appWorkspaceIndexRoute,
 }
 
 const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
   appRouteRouteChildren,
 )
 
+interface publicRouteRouteChildren {
+  publicLoginRoute: typeof publicLoginRoute
+  publicRegisterRoute: typeof publicRegisterRoute
+}
+
+const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicLoginRoute: publicLoginRoute,
+  publicRegisterRoute: publicRegisterRoute,
+}
+
+const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
+  publicRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   appRouteRoute: appRouteRouteWithChildren,
-  LoginRoute: LoginRoute,
-  RegisterRoute: RegisterRoute,
+  publicRouteRoute: publicRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
