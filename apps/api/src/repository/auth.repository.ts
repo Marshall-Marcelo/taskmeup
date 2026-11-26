@@ -1,5 +1,5 @@
 import { pool } from '../configs/db.js';
-import type { LoggedInUser, NewUser, User_DB } from '@taskmeup/shared';
+import type { NewUser, User_DB } from '@taskmeup/shared';
 
 export async function createUser(userId: string, newUser: NewUser) {
   const result = await pool.query(

@@ -18,6 +18,8 @@ import { Route as publicRegisterRouteImport } from './routes/(public)/register'
 import { Route as appMessagesIndexRouteImport } from './routes/(app)/messages/index'
 import { Route as appTaskIndexRouteImport } from './routes/(app)/task/index'
 import { Route as appWorkspaceIndexRouteImport } from './routes/(app)/workspace/index'
+import { Route as appWorkspaceWorkspaceIdRouteImport } from './routes/(app)/workspace/$workspaceId'
+import { Route as appWorkspaceNewRouteImport } from './routes/(app)/workspace/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -62,12 +64,24 @@ const appWorkspaceIndexRoute = appWorkspaceIndexRouteImport.update({
   path: '/workspace/',
   getParentRoute: () => appRouteRoute,
 } as any)
+const appWorkspaceWorkspaceIdRoute = appWorkspaceWorkspaceIdRouteImport.update({
+  id: '/workspace/$workspaceId',
+  path: '/workspace/$workspaceId',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appWorkspaceNewRoute = appWorkspaceNewRouteImport.update({
+  id: '/workspace/new',
+  path: '/workspace/new',
+  getParentRoute: () => appRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof appDashboardRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/workspace/$workspaceId': typeof appWorkspaceWorkspaceIdRoute
+  '/workspace/new': typeof appWorkspaceNewRoute
   '/messages/': typeof appMessagesIndexRoute
   '/task/': typeof appTaskIndexRoute
   '/workspace/': typeof appWorkspaceIndexRoute
@@ -77,6 +91,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof appDashboardRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/workspace/$workspaceId': typeof appWorkspaceWorkspaceIdRoute
+  '/workspace/new': typeof appWorkspaceNewRoute
   '/messages': typeof appMessagesIndexRoute
   '/task': typeof appTaskIndexRoute
   '/workspace': typeof appWorkspaceIndexRoute
@@ -89,6 +105,8 @@ export interface FileRoutesById {
   '/(app)/dashboard': typeof appDashboardRoute
   '/(public)/login': typeof publicLoginRoute
   '/(public)/register': typeof publicRegisterRoute
+  '/(app)/workspace/$workspaceId': typeof appWorkspaceWorkspaceIdRoute
+  '/(app)/workspace/new': typeof appWorkspaceNewRoute
   '/(app)/messages/': typeof appMessagesIndexRoute
   '/(app)/task/': typeof appTaskIndexRoute
   '/(app)/workspace/': typeof appWorkspaceIndexRoute
@@ -100,6 +118,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/workspace/$workspaceId'
+    | '/workspace/new'
     | '/messages/'
     | '/task/'
     | '/workspace/'
@@ -109,6 +129,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/workspace/$workspaceId'
+    | '/workspace/new'
     | '/messages'
     | '/task'
     | '/workspace'
@@ -120,6 +142,8 @@ export interface FileRouteTypes {
     | '/(app)/dashboard'
     | '/(public)/login'
     | '/(public)/register'
+    | '/(app)/workspace/$workspaceId'
+    | '/(app)/workspace/new'
     | '/(app)/messages/'
     | '/(app)/task/'
     | '/(app)/workspace/'
@@ -196,11 +220,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appWorkspaceIndexRouteImport
       parentRoute: typeof appRouteRoute
     }
+    '/(app)/workspace/$workspaceId': {
+      id: '/(app)/workspace/$workspaceId'
+      path: '/workspace/$workspaceId'
+      fullPath: '/workspace/$workspaceId'
+      preLoaderRoute: typeof appWorkspaceWorkspaceIdRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/workspace/new': {
+      id: '/(app)/workspace/new'
+      path: '/workspace/new'
+      fullPath: '/workspace/new'
+      preLoaderRoute: typeof appWorkspaceNewRouteImport
+      parentRoute: typeof appRouteRoute
+    }
   }
 }
 
 interface appRouteRouteChildren {
   appDashboardRoute: typeof appDashboardRoute
+  appWorkspaceWorkspaceIdRoute: typeof appWorkspaceWorkspaceIdRoute
+  appWorkspaceNewRoute: typeof appWorkspaceNewRoute
   appMessagesIndexRoute: typeof appMessagesIndexRoute
   appTaskIndexRoute: typeof appTaskIndexRoute
   appWorkspaceIndexRoute: typeof appWorkspaceIndexRoute
@@ -208,6 +248,8 @@ interface appRouteRouteChildren {
 
 const appRouteRouteChildren: appRouteRouteChildren = {
   appDashboardRoute: appDashboardRoute,
+  appWorkspaceWorkspaceIdRoute: appWorkspaceWorkspaceIdRoute,
+  appWorkspaceNewRoute: appWorkspaceNewRoute,
   appMessagesIndexRoute: appMessagesIndexRoute,
   appTaskIndexRoute: appTaskIndexRoute,
   appWorkspaceIndexRoute: appWorkspaceIndexRoute,

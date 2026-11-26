@@ -8,3 +8,8 @@ export interface LoginResponse {
   user: LoggedInUser;
   message: string;
 }
+
+export interface NewWorkspaceResponse {
+  workspaceId: string;
+  message: string;
+}

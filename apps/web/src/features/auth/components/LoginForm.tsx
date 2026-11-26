@@ -50,7 +50,10 @@ const LoginForm = () => {
             },
           });
           navigate({ to: '/dashboard' });
-          toast(data.message);
+          toast.success(data.message);
+        },
+        onError: (data) => {
+          toast.error(data.message);
         },
       });
     },

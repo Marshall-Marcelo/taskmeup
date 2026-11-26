@@ -51,8 +51,11 @@ const RegisterForm = () => {
 
       createAccount(newUser, {
         onSuccess: (data) => {
-          toast(data.message);
+          toast.success(data.message);
           navigate({ to: '/login' });
+        },
+        onError: (data) => {
+          toast.error(data.message);
         },
       });
     },
