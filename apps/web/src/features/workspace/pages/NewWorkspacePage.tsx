@@ -13,8 +13,10 @@ import { NewWorkspaceSchema } from '@taskmeup/shared';
 import { useCreateNewWorkspace } from '@/features/workspace/hooks/useWorkspace';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
+import { useWorkspaceContext } from '@/hooks/useWorkspaceContext';
 
 const NewWorkspacePage = () => {
+  const { setWorkspaceId, setWorkspaceName } = useWorkspaceContext();
   const { mutate: createWorkspace, isPending: isCreatingWorkspace } =
     useCreateNewWorkspace();
   const navigate = useNavigate();
@@ -30,9 +32,12 @@ const NewWorkspacePage = () => {
 
       createWorkspace(workspaceName, {
         onSuccess: (data) => {
+          setWorkspaceId(data.workspace.workspaceId);
+          setWorkspaceName(data.workspace.workspaceName);
           navigate({
-            to: '/workspace/$workspaceId',
-            params: { workspaceId: data.workspaceId },
+            to: '/dashboard',
+            // to: '/workspace/$workspaceId',
+            // params: { workspaceId: data.workspaceId },
           });
           toast.success(data.message);
         },

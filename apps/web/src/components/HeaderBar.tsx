@@ -12,8 +12,9 @@ import { Link } from '@tanstack/react-router';
 import { useGetWorkspaces } from '@/features/workspace/hooks/useWorkspace';
 import { Spinner } from '@/components/ui/spinner';
 import type { WorkspaceList } from '@taskmeup/shared';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { ArrowDown } from 'lucide-react';
+import { useWorkspaceContext } from '@/hooks/useWorkspaceContext';
 
 type Props = {
   className?: string;
@@ -21,6 +22,7 @@ type Props = {
 
 const HeaderBar = ({ className }: Props) => {
   const { data: workspaces, isPending } = useGetWorkspaces();
+
   if (isPending || !workspaces) return <Spinner />;
 
   return (
@@ -38,15 +40,35 @@ type HeaderDropdownProps = {
 };
 
 const HeaderDropdown = ({ workspaces }: HeaderDropdownProps) => {
-  const [selectedWorkspace, setSelectedWorkspace] = useState(
-    'No workplace selected',
-  );
+  const firstWorkspace: WorkspaceList = {
+    workspaceId: workspaces[0].workspaceId,
+    workspaceName: workspaces[0].workspaceName,
+  };
+
+  const { setWorkspaceId, workspaceName, setWorkspaceName } =
+    useWorkspaceContext();
+
+  useEffect(() => {
+    setWorkspaceId(firstWorkspace.workspaceId);
+    setWorkspaceName(firstWorkspace.workspaceName);
+  }, [
+    firstWorkspace.workspaceId,
+    firstWorkspace.workspaceName,
+    setWorkspaceName,
+    setWorkspaceId,
+  ]);
+
+  const handleClick = (workspaceName: string, workspaceId: string) => {
+    setWorkspaceName(workspaceName);
+    setWorkspaceId(workspaceId);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <span className="flex items-center gap-1">
-            {selectedWorkspace}
+            {workspaceName}
             <ArrowDown size={14} />
           </span>
         }
@@ -57,16 +79,13 @@ const HeaderDropdown = ({ workspaces }: HeaderDropdownProps) => {
           {workspaces.length !== 0 ? (
             workspaces.map((workspace) => (
               <DropdownMenuItem
-                onClick={() => setSelectedWorkspace(workspace.workspaceName)}
+                onClick={() =>
+                  handleClick(workspace.workspaceName, workspace.workspaceId)
+                }
                 key={workspace.workspaceName}
                 className="focus:bg-transparent data-highlighted:bg-transparent"
               >
-                <Link
-                  to="/workspace/$workspaceId"
-                  params={{ workspaceId: workspace.workspaceId }}
-                >
-                  {workspace.workspaceName}
-                </Link>
+                {workspace.workspaceName}
               </DropdownMenuItem>
             ))
           ) : (

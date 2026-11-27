@@ -1,5 +1,11 @@
 import { cn } from 'cn';
-import { Home, UserGroup, MessageCircle, ClipboardPen } from 'lucide-react';
+import {
+  Home,
+  // UserGroup,
+  MessageCircle,
+  ClipboardPen,
+  Ellipsis,
+} from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
 type Props = {
@@ -13,11 +19,11 @@ const navigationBarItems = [
     path: '/dashboard',
     name: 'dashboard',
   },
-  {
-    icon: <UserGroup size={32} strokeWidth={1.5} />,
-    path: '/workspace',
-    name: 'workspace',
-  },
+  // {
+  //   icon: <UserGroup size={32} strokeWidth={1.5} />,
+  //   path: '/workspace',
+  //   name: 'workspace',
+  // },
   {
     icon: <MessageCircle size={32} strokeWidth={1.5} />,
     path: '/messages',
@@ -47,15 +53,20 @@ const NavigationBar = ({ className, currentPath }: Props) => {
           currentlySelected={currentPath}
         />
       ))}
+      <NavigationBarItem
+        currentlySelected={currentPath}
+        icon={<Ellipsis />}
+        name="additonal"
+      />
     </div>
   );
 };
 
 interface NavigationBarItemProps {
   icon: React.ReactNode;
-  path: string;
+  path?: string;
   name: string;
-  currentlySelected: string;
+  currentlySelected?: string;
 }
 
 const NavigationBarItem = ({

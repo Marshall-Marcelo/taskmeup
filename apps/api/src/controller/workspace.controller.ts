@@ -19,10 +19,10 @@ export async function createNewWorkspaceController(
       throw new UnauthorizedError('Invalid access');
     }
 
-    const workspaceId = await createNewWorkspace(workspaceName, userId);
+    const workspace = await createNewWorkspace(workspaceName, userId);
 
     res.status(201).json({
-      workspaceId,
+      workspace,
       message: 'Workspace creation successful',
     });
   } catch (error) {

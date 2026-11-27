@@ -6,7 +6,9 @@ import type {
 } from '@taskmeup/shared';
 
 // Add query related message group creation here
-export async function createWorkspace(newWorkspace: NewWorkspace) {
+export async function createWorkspace(
+  newWorkspace: NewWorkspace,
+): Promise<WorkspaceList_DB> {
   const client = await pool.connect();
 
   try {
@@ -15,7 +17,7 @@ export async function createWorkspace(newWorkspace: NewWorkspace) {
     const workspaceResult = await client.query(
       `INSERT INTO workspace(workspace_id, created_by, workspace_name) 
        VALUES ($1, $2, $3)
-       RETURNING workspace_id`,
+       RETURNING workspace_id, workspace_name`,
       [
         newWorkspace.workspaceId,
         newWorkspace.createdBy,
@@ -23,17 +25,17 @@ export async function createWorkspace(newWorkspace: NewWorkspace) {
       ],
     );
 
-    const workspaceId = workspaceResult.rows[0].workspace_id;
+    const createdWorkspace: WorkspaceList_DB = workspaceResult.rows[0];
 
     await client.query(
       `INSERT INTO workspace_members(workspace_id, user_id, role)
        VALUES ($1, $2, $3)`,
-      [workspaceId, newWorkspace.createdBy, 'owner'],
+      [createdWorkspace.workspace_id, newWorkspace.createdBy, 'owner'],
     );
 
     await client.query('COMMIT');
 
-    return workspaceId ?? null;
+    return createdWorkspace ?? null;
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;

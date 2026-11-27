@@ -26,9 +26,14 @@ export async function createNewWorkspace(
     workspaceName,
   };
 
-  const newWorkspaceId = await createWorkspace(newWorkspace);
+  const createdWorkspace = await createWorkspace(newWorkspace);
 
-  return newWorkspaceId;
+  const parsedCreatedWorkspace: WorkspaceList = {
+    workspaceId: createdWorkspace.workspace_id,
+    workspaceName: createdWorkspace.workspace_name,
+  };
+
+  return parsedCreatedWorkspace;
 }
 
 export async function verifyMembership(userId: string, workspaceId: string) {

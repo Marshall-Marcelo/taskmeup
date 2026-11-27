@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/features/auth';
 import { Toaster } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { SocketProvider } from '@/lib/socket-provider';
+import { WorkspaceProvider } from '@/context/workspace-context';
 
 export const router = createRouter({
   routeTree,
@@ -39,10 +40,12 @@ const App = () => {
   return (
     <QueryProvider>
       <AuthProvider>
-        <SocketProvider>
-          <RoutedApplication />
-          <Toaster duration={2 * 1000} />
-        </SocketProvider>
+        <WorkspaceProvider>
+          <SocketProvider>
+            <RoutedApplication />
+            <Toaster duration={2 * 1000} />
+          </SocketProvider>
+        </WorkspaceProvider>
       </AuthProvider>
     </QueryProvider>
   );
