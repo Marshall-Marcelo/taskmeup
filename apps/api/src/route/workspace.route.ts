@@ -19,7 +19,7 @@ router.get('/list', verifyAccessToken, getWorkspacesController);
 router.get(
   '/:workspaceId',
   verifyAccessToken,
-  validateWorkspaceId,
+  validateWorkspaceId('params'),
   getWorkspaceDetailsController,
 );
 

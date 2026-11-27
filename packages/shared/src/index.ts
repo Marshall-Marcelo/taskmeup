@@ -5,3 +5,4 @@ export * from './types/error.js';
 
 export * from './schema/user.js';
 export * from './schema/workspace.js';
+export * from './schema/task.js';

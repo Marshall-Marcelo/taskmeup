@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import { errorMiddleware } from './middleware/error.middleware.js';
 import authRoutes from './route/auth.route.js';
 import workspaceRoutes from './route/workspace.route.js';
+import taskRoutes from './route/task.route.js';
 
 export function buildApp(): Application {
   const app = express();
@@ -31,9 +32,9 @@ export function buildApp(): Application {
   app.use(cookieParser());
 
   // routes go here
-
   app.use('/auth', authRoutes);
   app.use('/workspace', workspaceRoutes);
+  app.use('/task', taskRoutes);
 
   app.use(errorMiddleware);
 

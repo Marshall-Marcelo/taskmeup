@@ -31,31 +31,31 @@ export function validateBody(schema: ZodType) {
   };
 }
 
-export async function validateWorkspaceId(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  try {
-    const { workspaceId } = req.params;
-    const userId = req.userId;
+type WorkspaceIdSource = 'params' | 'body';
 
-    if (!workspaceId || Array.isArray(workspaceId)) {
-      throw new BadRequestError('Malformed data');
+export function validateWorkspaceId(source: WorkspaceIdSource) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const workspaceId = req[source].workspaceId;
+      const userId = req.userId;
+
+      if (!workspaceId || Array.isArray(workspaceId)) {
+        throw new BadRequestError('Malformed data');
+      }
+
+      if (!userId) {
+        throw new UnauthorizedError('Unauthorized');
+      }
+
+      const isValidMember = await verifyMembership(userId, workspaceId);
+
+      if (!isValidMember) {
+        throw new ForbiddenError('Unauthorized');
+      }
+
+      next();
+    } catch (error) {
+      next(error);
     }
-
-    if (!userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
-
-    const isValidMember = await verifyMembership(userId, workspaceId);
-
-    if (!isValidMember) {
-      throw new ForbiddenError('Unauthorized');
-    }
-
-    next();
-  } catch (error) {
-    next(error);
-  }
+  };
 }
