@@ -33,8 +33,8 @@ export function buildApp(): Application {
 
   // routes go here
   app.use('/auth', authRoutes);
-  app.use('/workspace', workspaceRoutes);
   app.use('/task', taskRoutes);
+  app.use('/workspace', workspaceRoutes);
 
   app.use(errorMiddleware);
 

@@ -1,5 +1,5 @@
 import { pool } from '../configs/db.js';
-import type { NewTask } from '@taskmeup/shared';
+import type { NewTask, Task_DB } from '@taskmeup/shared';
 
 export async function createTask(
   newTask: NewTask,
@@ -24,3 +24,18 @@ export async function createTask(
 
   return (result.rowCount ?? 0) > 0;
 }
+
+export async function getTasksForWorkspace(
+  workspaceId: string,
+): Promise<Task_DB[]> {
+  const result = await pool.query<Task_DB>(
+    `SELECT * FROM tasks
+     WHERE workspace_id = $1
+     ORDER BY due_date ASC NULLS LAST`,
+    [workspaceId],
+  );
+
+  return result.rows;
+}
+
+export async function getTasksForUser(userId: string) {}

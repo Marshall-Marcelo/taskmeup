@@ -5,10 +5,15 @@ import {
   validateMemberRole,
   getWorkspaceDetails as getWorkspaceDetails_repo,
   getWorkspaces as getWorkspaces_repo,
+  getWorkspaceMembers as getWorkspaceMembers_repo,
 } from '../repository/workspace.repository.js';
 import { v7 } from 'uuid';
 import { NotFoundError, UnprocessableEntityError } from '@taskmeup/shared';
-import type { Workspace, WorkspaceList } from '@taskmeup/shared';
+import type {
+  Workspace,
+  WorkspaceList,
+  WorkspaceMembers,
+} from '@taskmeup/shared';
 
 export async function createNewWorkspace(
   workspaceName: string,
@@ -69,10 +74,26 @@ export async function getWorkspaceDetails(workspaceId: string) {
 export async function getWorkspaces(userId: string) {
   const workspaces = await getWorkspaces_repo(userId);
 
-  const parsedWorkspaces: WorkspaceList[] = workspaces?.map((workspace) => ({
+  const parsedWorkspaces: WorkspaceList[] = workspaces.map((workspace) => ({
     workspaceId: workspace.workspace_id,
     workspaceName: workspace.workspace_name,
   }));
 
   return parsedWorkspaces;
+}
+
+export async function getWorkspaceMembers(workspaceId: string) {
+  const workspaceMembers = await getWorkspaceMembers_repo(workspaceId);
+
+  const parsedWorkspaceMembers: WorkspaceMembers[] = workspaceMembers.map(
+    (member) => ({
+      userId: member.user_id,
+      firstName: member.first_name,
+      lastName: member.last_name,
+      email: member.email,
+      role: member.role,
+    }),
+  );
+
+  return parsedWorkspaceMembers;
 }

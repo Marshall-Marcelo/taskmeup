@@ -66,6 +66,7 @@ const HeaderDropdown = ({ workspaces }: HeaderDropdownProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        nativeButton={false}
         render={
           <span className="flex items-center gap-1">
             {workspaceName}

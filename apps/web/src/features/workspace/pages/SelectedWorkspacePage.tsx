@@ -10,6 +10,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NewTaskDialog from '@/features/workspace/components/NewTaskDialog';
 import { useState } from 'react';
+import { useGetWorkspaceTasks } from '@/features/task/hooks/useTask';
+import { TaskDisplay } from '@/features/task';
 
 type Props = {
   workspaceId: string;
@@ -17,15 +19,22 @@ type Props = {
 
 const SelectedWorkspacePage = ({ workspaceId }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+
   const {
     data: workspace,
-    isPending,
+    isPending: isFetchingWorkspaceDetails,
     isError,
     isFetching,
   } = useGetWorkspaceDetails(workspaceId);
 
+  const { data: tasks, isPending: isFetchingTasks } = useGetWorkspaceTasks(
+    workspaceId,
+    activeTab,
+  );
+
   if (isError) return <div>Forbidden</div>;
-  if (isPending || isFetching) return <Spinner />;
+  if (isFetchingWorkspaceDetails || isFetching) return <Spinner />;
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,7 +45,11 @@ const SelectedWorkspacePage = ({ workspaceId }: Props) => {
         </h2>
       </div>
 
-      <Tabs defaultValue="tasks">
+      <Tabs
+        defaultValue={activeTab}
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="tasks">Tasks</TabsTrigger>
@@ -58,13 +71,100 @@ const SelectedWorkspacePage = ({ workspaceId }: Props) => {
               <CardTitle className="flex flex-row items-center justify-between">
                 <span>Tasks</span>
                 <NewTaskDialog
+                  currentTab={activeTab}
                   isDialogOpen={isDialogOpen}
                   setIsDialogOpen={setIsDialogOpen}
                 />
               </CardTitle>
-              <CardDescription>Tasks</CardDescription>
             </CardHeader>
-            <CardContent>Tasks</CardContent>
+            <CardContent className="flex flex-col gap-6">
+              {isFetchingTasks ? (
+                <Spinner />
+              ) : (
+                tasks?.map(({ priority, tasks }) => (
+                  <>
+                    {priority === 'high' && (
+                      <div className="flex flex-col gap-1">
+                        <h3 className="border-b-2 border-red-500 font-bold">
+                          High Priority
+                        </h3>
+                        {tasks.length !== 0 ? (
+                          tasks.map((task) => (
+                            <TaskDisplay
+                              key={task.taskId}
+                              taskId={task.taskId}
+                              workspaceId={task.workspaceId}
+                              taskName={task.taskName}
+                              taskDescription={task.taskDescription}
+                              createdBy={task.createdBy}
+                              status={task.status}
+                              priority={task.priority}
+                              dueDate={task.dueDate}
+                              createdAt={task.createdAt}
+                              updatedAt={task.updatedAt}
+                            />
+                          ))
+                        ) : (
+                          <>No tasks</>
+                        )}
+                      </div>
+                    )}
+                    {priority === 'medium' && (
+                      <div className="flex flex-col">
+                        <h3 className="border-b-2 border-yellow-500">
+                          Medium Priority
+                        </h3>
+                        {tasks.length !== 0 ? (
+                          tasks.map((task) => (
+                            <TaskDisplay
+                              key={task.taskId}
+                              taskId={task.taskId}
+                              workspaceId={task.workspaceId}
+                              taskName={task.taskName}
+                              taskDescription={task.taskDescription}
+                              createdBy={task.createdBy}
+                              status={task.status}
+                              priority={task.priority}
+                              dueDate={task.dueDate}
+                              createdAt={task.createdAt}
+                              updatedAt={task.updatedAt}
+                            />
+                          ))
+                        ) : (
+                          <>No tasks</>
+                        )}
+                      </div>
+                    )}
+                    {priority === 'low' && (
+                      <div className="flex flex-col gap-1">
+                        <h3 className="border-b-2 border-green-500">
+                          Low Priority
+                        </h3>
+                        {tasks.length !== 0 ? (
+                          tasks.map((task) => (
+                            <TaskDisplay
+                              key={task.taskId}
+                              taskId={task.taskId}
+                              workspaceId={task.workspaceId}
+                              taskName={task.taskName}
+                              taskDescription={task.taskDescription}
+                              createdBy={task.createdBy}
+                              status={task.status}
+                              priority={task.priority}
+                              dueDate={task.dueDate}
+                              createdAt={task.createdAt}
+                              updatedAt={task.updatedAt}
+                            />
+                          ))
+                        ) : (
+                          <>No tasks</>
+                        )}
+                      </div>
+                    )}
+                  </>
+                ))
+              )}
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="members">

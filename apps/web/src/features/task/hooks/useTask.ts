@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { taskService } from '@/features/task/service/task';
 import type { NewTask } from '@taskmeup/shared';
 import { queryKeys } from '@/lib/query-keys';
@@ -12,5 +12,13 @@ export function useCreateNewTask(workspaceId: string) {
         queryKey: queryKeys.task.list(workspaceId),
       });
     },
+  });
+}
+
+export function useGetWorkspaceTasks(workspaceId: string, currentTab: string) {
+  return useQuery({
+    queryKey: queryKeys.task.list(workspaceId),
+    queryFn: () => taskService.getWorkspaceTasks(workspaceId),
+    enabled: currentTab === 'tasks',
   });
 }

@@ -4,6 +4,7 @@ import {
   createNewWorkspaceController,
   getWorkspaceDetailsController,
   getWorkspacesController,
+  getWorkspaceMembersController,
 } from '../controller/workspace.controller.js';
 import { verifyAccessToken } from '../middleware/auth.middleware.js';
 import {
@@ -13,9 +14,19 @@ import {
 
 const router: ExpressRouter = Router();
 
+// Static Routes
 router.post('/new', verifyAccessToken, createNewWorkspaceController);
 router.get('/list', verifyAccessToken, getWorkspacesController);
 
+// Nested Resource Routes
+router.get(
+  '/:workspaceId/members',
+  verifyAccessToken,
+  validateWorkspaceId('params'),
+  getWorkspaceMembersController,
+);
+
+// General Routes
 router.get(
   '/:workspaceId',
   verifyAccessToken,

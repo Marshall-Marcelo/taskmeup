@@ -18,13 +18,14 @@ import { env } from '../configs/env.js';
 export async function registerUser(newUser: NewUser) {
   const hashedPassword = await bcrypt.hash(newUser.password, 10);
   const userId = v7();
+  const workspaceId = v7();
 
   const formattedNewUser: NewUser = {
     ...newUser,
     password: hashedPassword,
   };
 
-  await createUser(userId, formattedNewUser);
+  await createUser(userId, formattedNewUser, workspaceId);
 }
 
 export async function loginUser(email: string, password: string) {

@@ -3,6 +3,7 @@ import {
   createNewWorkspace,
   getWorkspaceDetails,
   getWorkspaces,
+  getWorkspaceMembers,
 } from '../service/workspace.service.js';
 import { UnauthorizedError, BadRequestError } from '@taskmeup/shared';
 
@@ -65,6 +66,26 @@ export async function getWorkspacesController(
     const workspaces = await getWorkspaces(userId);
 
     res.status(200).json(workspaces);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorkspaceMembersController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { workspaceId } = req.params;
+
+    if (!workspaceId || Array.isArray(workspaceId)) {
+      throw new BadRequestError('Malformed data');
+    }
+
+    const workspaceMembers = await getWorkspaceMembers(workspaceId);
+
+    res.status(200).json(workspaceMembers);
   } catch (error) {
     next(error);
   }

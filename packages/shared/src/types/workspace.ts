@@ -22,17 +22,19 @@ export interface NewWorkspace extends Omit<
 type WorkspaceRoles = 'member' | 'moderator' | 'owner';
 
 export interface WorkspaceMembers {
-  workspaceId: string;
   userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   role: WorkspaceRoles;
-  joinedAt: string;
 }
 
 export interface WorkspaceMembers_DB {
-  workspace_id: string;
   user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
   role: WorkspaceRoles;
-  joined_at: string;
 }
 
 export interface WorkspaceList {

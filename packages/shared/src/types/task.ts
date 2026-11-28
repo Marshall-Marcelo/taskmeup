@@ -1,4 +1,9 @@
-export type TaskStatus = 'todo' | 'ongoing' | 'review' | 'cancelled';
+export type TaskStatus =
+  | 'todo'
+  | 'ongoing'
+  | 'review'
+  | 'cancelled'
+  | 'completed';
 export type TaskPriority = 'low' | 'medium' | 'high';
 
 export interface Task_DB {
@@ -25,4 +30,9 @@ export interface Task {
   dueDate: string | null;
   createdAt: string;
   updatedAt: string | null;
+}
+
+export interface GroupedTasks {
+  priority: TaskPriority;
+  tasks: Task[];
 }

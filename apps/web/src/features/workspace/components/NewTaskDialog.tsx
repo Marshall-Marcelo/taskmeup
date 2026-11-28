@@ -34,22 +34,35 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { formatISO, format } from 'date-fns';
+import { formatISO } from 'date-fns';
+import { formatHumanReadableDate } from '@/lib/date';
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useCreateNewTask } from '@/features/task';
+import { useGetWorkspaceMembers } from '@/features/workspace/hooks/useWorkspace';
 import { toast } from 'sonner';
 
 type Props = {
   isDialogOpen: boolean;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentTab: string;
 };
 
-const NewTaskDialog = ({ isDialogOpen, setIsDialogOpen }: Props) => {
+const NewTaskDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+  currentTab,
+}: Props) => {
   const { workspaceId } = useWorkspaceContext();
   const { mutate: createNewTask, isPending: isCreatingTask } =
     useCreateNewTask(workspaceId);
+  const { data: members, isPending: isFetchingMembers } =
+    useGetWorkspaceMembers(workspaceId, currentTab);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  console.log(members);
+
   const form = useForm({
     defaultValues: {
       workspaceId: workspaceId,
@@ -72,7 +85,7 @@ const NewTaskDialog = ({ isDialogOpen, setIsDialogOpen }: Props) => {
         dueDate: value.dueDate,
       };
 
-      console.log(newTask);
+      // console.log(newTask);
 
       createNewTask(newTask, {
         onSuccess: (data) => {
@@ -92,6 +105,7 @@ const NewTaskDialog = ({ isDialogOpen, setIsDialogOpen }: Props) => {
     { label: 'On Going', value: 'ongoing' },
     { label: 'In Review', value: 'review' },
     { label: 'Cancelled', value: 'cancelled' },
+    { label: 'Completed', value: 'completed' },
   ];
 
   const priorityItems = [
@@ -270,9 +284,8 @@ const NewTaskDialog = ({ isDialogOpen, setIsDialogOpen }: Props) => {
                           }
                         >
                           {field.state.value !== null
-                            ? format(
+                            ? formatHumanReadableDate(
                                 new Date(field.state.value),
-                                'MMMM d, yyyy',
                               )
                             : 'Select'}
                         </PopoverTrigger>
@@ -287,6 +300,7 @@ const NewTaskDialog = ({ isDialogOpen, setIsDialogOpen }: Props) => {
                             }}
                             className="w-full"
                             mode="single"
+                            timeZone={timeZone}
                           />
                         </PopoverContent>
                       </Popover>

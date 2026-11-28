@@ -3,6 +3,7 @@ import type {
   NewWorkspaceResponse,
   Workspace,
   WorkspaceList,
+  WorkspaceMembers,
 } from '@taskmeup/shared';
 
 class WorkspaceService extends ApiService {
@@ -35,6 +36,17 @@ class WorkspaceService extends ApiService {
     const data: WorkspaceList[] = await this.handleFetch(`/workspace/list`, {
       method: 'GET',
     });
+
+    return data;
+  }
+
+  async getWorkspaceMembers(workspaceId: string): Promise<WorkspaceMembers[]> {
+    const data: WorkspaceMembers[] = await this.handleFetch(
+      `/workspace/${workspaceId}/members`,
+      {
+        method: 'GET',
+      },
+    );
 
     return data;
   }

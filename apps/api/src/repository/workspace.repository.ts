@@ -3,6 +3,7 @@ import type {
   NewWorkspace,
   Workspace_DB,
   WorkspaceList_DB,
+  WorkspaceMembers_DB,
 } from '@taskmeup/shared';
 
 // Add query related message group creation here
@@ -89,6 +90,23 @@ export async function getWorkspaces(
      WHERE wm.user_id = $1
     `,
     [userId],
+  );
+
+  return result.rows;
+}
+
+export async function getWorkspaceMembers(
+  workspaceId: string,
+): Promise<WorkspaceMembers_DB[]> {
+  const result = await pool.query<WorkspaceMembers_DB>(
+    `SELECT u.user_id, u.first_name, u.last_name, u.email, wm.role FROM workspace_members wm
+     INNER JOIN workspace w
+     ON w.workspace_id = wm.workspace_id
+     INNER JOIN users u
+     ON u.user_id = wm.user_id
+     WHERE w.workspace_id = $1
+    `,
+    [workspaceId],
   );
 
   return result.rows;

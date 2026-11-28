@@ -25,3 +25,14 @@ export function useGetWorkspaces() {
     queryFn: () => workspaceService.getWorkspaces(),
   });
 }
+
+export function useGetWorkspaceMembers(
+  workspaceId: string,
+  currentTab: string,
+) {
+  return useQuery({
+    queryKey: queryKeys.workspace.members(workspaceId),
+    queryFn: () => workspaceService.getWorkspaceMembers(workspaceId),
+    enabled: currentTab === 'tasks' || currentTab === 'members',
+  });
+}
